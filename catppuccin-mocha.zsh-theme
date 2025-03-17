@@ -1,6 +1,6 @@
 # -*- mode: sh; -*-
 # vim: set ft=sh :
-# Dracula Theme v1.2.5
+# Catppuccin Mocha Theme v1.2.5
 #
 # https://github.com/dracula/dracula-theme
 #
@@ -22,25 +22,25 @@ PROMPT=''
 
 # Options {{{
 # Set to 0 to disable the git status
-DRACULA_DISPLAY_GIT=${DRACULA_DISPLAY_GIT:-1}
+CATPPUCCIN_DISPLAY_GIT=${CATPPUCCIN_DISPLAY_GIT:-1}
 
 # Set to 1 to show the date
-DRACULA_DISPLAY_TIME=${DRACULA_DISPLAY_TIME:-0}
+CATPPUCCIN_DISPLAY_TIME=${CATPPUCCIN_DISPLAY_TIME:-0}
 
 # Set to 1 to show the 'context' segment
-DRACULA_DISPLAY_CONTEXT=${DRACULA_DISPLAY_CONTEXT:-0}
+CATPPUCCIN_DISPLAY_CONTEXT=${CATPPUCCIN_DISPLAY_CONTEXT:-0}
 
 # Changes the arrow icon
-DRACULA_ARROW_ICON=${DRACULA_ARROW_ICON:-➜ }
+CATPPUCCIN_ARROW_ICON=${CATPPUCCIN_ARROW_ICON:-➜ }
 
 # Set to 1 to use a new line for commands
-DRACULA_DISPLAY_NEW_LINE=${DRACULA_DISPLAY_NEW_LINE:-0}
+CATPPUCCIN_DISPLAY_NEW_LINE=${CATPPUCCIN_DISPLAY_NEW_LINE:-0}
 
 # Set to 1 to show full path of current working directory
-DRACULA_DISPLAY_FULL_CWD=${DRACULA_DISPLAY_FULL_CWD:-0}
+CATPPUCCIN_DISPLAY_FULL_CWD=${CATPPUCCIN_DISPLAY_FULL_CWD:-0}
 
 # function to detect if git has support for --no-optional-locks
-dracula_test_git_optional_lock() {
+catppuccin_test_git_optional_lock() {
 	local git_version=${DEBUG_OVERRIDE_V:-"$(git version | cut -d' ' -f3)"}
 	local git_version="$(git version | cut -d' ' -f3)"
 	# test for git versions < 2.14.0
@@ -64,45 +64,45 @@ dracula_test_git_optional_lock() {
 }
 
 # use --no-optional-locks flag on git
-DRACULA_GIT_NOLOCK=${DRACULA_GIT_NOLOCK:-$(dracula_test_git_optional_lock)}
+CATPPUCCIN_GIT_NOLOCK=${CATPPUCCIN_GIT_NOLOCK:-$(catppuccin_test_git_optional_lock)}
 
 # time format string
-if [[ -z "$DRACULA_TIME_FORMAT" ]]; then
-	DRACULA_TIME_FORMAT="%-H:%M"
+if [[ -z "$CATPPUCCIN_TIME_FORMAT" ]]; then
+	CATPPUCCIN_TIME_FORMAT="%-H:%M"
 	# check if locale uses AM and PM
 	if locale -ck LC_TIME 2>/dev/null | grep -q '^t_fmt="%r"$'; then
-		DRACULA_TIME_FORMAT="%-I:%M%p"
+		CATPPUCCIN_TIME_FORMAT="%-I:%M%p"
 	fi
 fi
 # }}}
 
 # Status segment {{{
-dracula_arrow() {
-	if [[ "$1" = "start" ]] && (( ! DRACULA_DISPLAY_NEW_LINE )); then
-		print -P "$DRACULA_ARROW_ICON"
-	elif [[ "$1" = "end" ]] && (( DRACULA_DISPLAY_NEW_LINE )); then
-		print -P "\n$DRACULA_ARROW_ICON"
+catppuccin_arrow() {
+	if [[ "$1" = "start" ]] && (( ! CATPPUCCIN_DISPLAY_NEW_LINE )); then
+		print -P "%F{#f5c2e7}$CATPPUCCIN_ARROW_ICON%f"  # Pink
+	elif [[ "$1" = "end" ]] && (( CATPPUCCIN_DISPLAY_NEW_LINE )); then
+		print -P "\n%F{#f5c2e7}$CATPPUCCIN_ARROW_ICON%f"  # Pink
 	fi
 }
 
 # arrow is green if last command was successful, red if not, 
 # turns yellow in vi command mode
-PROMPT+='%(1V:%F{yellow}:%(?:%F{green}:%F{red}))%B$(dracula_arrow start)'
+PROMPT+='%(1V:%F{#f9e2af}:%(?:%F{#a6e3a1}:%F{#f38ba8}))%B$(catppuccin_arrow start)'  # Yellow, Green, Red
 # }}}
 
 # Time segment {{{
-dracula_time_segment() {
-	if (( DRACULA_DISPLAY_TIME )); then
-		print -P "%D{$DRACULA_TIME_FORMAT} "
+catppuccin_time_segment() {
+	if (( CATPPUCCIN_DISPLAY_TIME )); then
+		print -P "%D{$CATPPUCCIN_TIME_FORMAT} "
 	fi
 }
 
-PROMPT+='%F{green}%B$(dracula_time_segment)'
+PROMPT+='%F{#94e2d5}%B$(catppuccin_time_segment)'  # Teal
 # }}}
 
 # User context segment {{{
-dracula_context() {
-	if (( DRACULA_DISPLAY_CONTEXT )); then
+catppuccin_context() {
+	if (( CATPPUCCIN_DISPLAY_CONTEXT )); then
 		if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]] || (( EUID == 0 )); then
 			echo '%n@%m '
 		else
@@ -111,39 +111,38 @@ dracula_context() {
 	fi
 }
 
-PROMPT+='%F{magenta}%B$(dracula_context)'
+PROMPT+='%F{#cba6f7}%B$(catppuccin_context)'  # Mauve
 # }}}
 
 # Directory segment {{{
-dracula_directory() {
-	if (( DRACULA_DISPLAY_FULL_CWD )); then
+catppuccin_directory() {
+	if (( CATPPUCCIN_DISPLAY_FULL_CWD )); then
 		print -P '%~ '
 	else
 		print -P '%c '
 	fi
 }
 
-PROMPT+='%F{blue}%B$(dracula_directory)'
+PROMPT+='%F{#89b4fa}%B$(catppuccin_directory)'  # Blue
 # }}}
 
 # Custom variable {{{
 custom_variable_prompt() {
-	[[ -z "$DRACULA_CUSTOM_VARIABLE" ]] && return
-	echo "%F{yellow}$DRACULA_CUSTOM_VARIABLE "
+	[[ -z "$CATPPUCCIN_CUSTOM_VARIABLE" ]] && return
+	echo "%F{#f9e2af}$CATPPUCCIN_CUSTOM_VARIABLE "  # Yellow
 }
 
 PROMPT+='$(custom_variable_prompt)'
 # }}}
 
 # Async git segment {{{
-
-dracula_git_status() {
-	(( ! DRACULA_DISPLAY_GIT )) && return
+catppuccin_git_status() {
+	(( ! CATPPUCCIN_DISPLAY_GIT )) && return
 	cd "$1"
 	
 	local ref branch lockflag
 	
-	(( DRACULA_GIT_NOLOCK )) && lockflag="--no-optional-locks"
+	(( CATPPUCCIN_GIT_NOLOCK )) && lockflag="--no-optional-locks"
 
 	ref=$(=git $lockflag symbolic-ref --quiet HEAD 2>/dev/null)
 
@@ -171,35 +170,35 @@ dracula_git_status() {
 	fi
 }
 
-dracula_git_callback() {
-	DRACULA_GIT_STATUS="$3"
+catppuccin_git_callback() {
+	CATPPUCCIN_GIT_STATUS="$3"
 	zle && zle reset-prompt
-	async_stop_worker dracula_git_worker dracula_git_status "$(pwd)"
+	async_stop_worker catppuccin_git_worker catppuccin_git_status "$(pwd)"
 }
 
-dracula_git_async() {
-	async_start_worker dracula_git_worker -n
-	async_register_callback dracula_git_worker dracula_git_callback
-	async_job dracula_git_worker dracula_git_status "$(pwd)"
+catppuccin_git_async() {
+	async_start_worker catppuccin_git_worker -n
+	async_register_callback catppuccin_git_worker catppuccin_git_callback
+	async_job catppuccin_git_worker catppuccin_git_status "$(pwd)"
 }
 
-add-zsh-hook precmd dracula_git_async
+add-zsh-hook precmd catppuccin_git_async
 
-PROMPT+='$DRACULA_GIT_STATUS'
+PROMPT+='$CATPPUCCIN_GIT_STATUS'
 
-ZSH_THEME_GIT_PROMPT_CLEAN=") %F{green}%B✔ "
-ZSH_THEME_GIT_PROMPT_DIRTY=") %F{yellow}%B✗ "
-ZSH_THEME_GIT_PROMPT_PREFIX="%F{cyan}%B("
+ZSH_THEME_GIT_PROMPT_CLEAN=") %F{#a6e3a1}%B✔ "  # Green
+ZSH_THEME_GIT_PROMPT_DIRTY=") %F{#f9e2af}%B✗ "  # Yellow
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{#f5c2e7}%B("  # Pink
 ZSH_THEME_GIT_PROMPT_SUFFIX="%f%b"
 # }}}
 
 # Linebreak {{{
-PROMPT+='%(1V:%F{yellow}:%(?:%F{green}:%F{red}))%B$(dracula_arrow end)'
+PROMPT+='%(1V:%F{#f9e2af}:%(?:%F{#a6e3a1}:%F{#f38ba8}))%B$(catppuccin_arrow end)'  # Yellow, Green, Red
 # }}}
 
 # define widget without clobbering old definitions
-dracula_defwidget() {
-	local fname=dracula-wrap-$1
+catppuccin_defwidget() {
+	local fname=catppuccin-wrap-$1
 	local prev=($(zle -l -L "$1"))
 	local oldfn=${prev[4]:-$1}
 
@@ -214,15 +213,15 @@ dracula_defwidget() {
 	
 	oldfn=${prev[4]:-$1}
 
-	zle -N dracula-old-$oldfn $oldfn
+	zle -N catppuccin-old-$oldfn $oldfn
 
-	eval "$fname() { $2 \"\$@\"; zle dracula-old-$oldfn -- \"\$@\"; }"
+	eval "$fname() { $2 \"\$@\"; zle catppuccin-old-$oldfn -- \"\$@\"; }"
 
 	zle -N $1 $fname
 }
 
 # ensure vi mode is handled by prompt
-dracula_zle_update() {
+catppuccin_zle_update() {
 	if [[ $KEYMAP = vicmd ]]; then
 		psvar[1]=vicmd
 	else
@@ -233,8 +232,8 @@ dracula_zle_update() {
 	zle -R
 }
 
-dracula_defwidget zle-line-init dracula_zle_update
-dracula_defwidget zle-keymap-select dracula_zle_update
+catppuccin_defwidget zle-line-init catppuccin_zle_update
+catppuccin_defwidget zle-keymap-select catppuccin_zle_update
 
 # Ensure effects are reset
 PROMPT+='%f%b'
