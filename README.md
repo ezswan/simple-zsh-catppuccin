@@ -49,7 +49,7 @@ Time, context, and directory segments are color-coded for readability.
 
 3. **Symlink from theme file to .oh-my-zsh**
 
-   `ln -s /path/to/catppuccin-mocha.zsh-theme ~/.oh-my-zsh/custom/themes/catppuccin-mocha.zsh-theme`
+   `ln -s /path/to/catppuccin-mocha.zsh-theme ~/.oh-my-zsh/custom/themes/catppuccin-mocha.zsh-theme`<br>
    _(Replace /path/to/ with the actual path to the cloned theme file)_
 
 4. **Set the theme in .zshrc**
@@ -59,3 +59,26 @@ Time, context, and directory segments are color-coded for readability.
 5. **Reload ZSH**
 
    `source ~/.zshrc`
+
+## Credits
+
+### Original Authors:
+
+Zeno Rocha hi@zenorocha.com
+Avalon Williams avalonwilliams@protonmail.com (Dracula Theme foundation)
+
+### Adapter and Modifier:
+
+ezswan ezswan@proton.me (Adapted the Catppuccin Mocha Theme, implemented the pink color fix replacing green, and discovered hex color support)
+
+## License
+
+This theme is licensed under the MIT License. See http://zenorocha.mit-license.org for details.
+
+## Contributing
+
+Feel free to submit issues or pull requests on the GitHub repository. Suggestions for new features or color schemes are welcome!
+
+## Acknowledgments
+
+Thanks to the Catppuccin project for the inspiring Mocha palette and the Dracula theme community for the original framework.
