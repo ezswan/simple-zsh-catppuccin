@@ -1,16 +1,16 @@
 # -*- mode: sh; -*-
 # vim: set ft=sh :
-# Catppuccin Mocha Theme v1.2.5
+# Catppuccin Mocha Theme v1.2.5 (Adapted by ezswan)
 #
-# https://github.com/dracula/dracula-theme
+# Based on: https://github.com/dracula/dracula-theme
 #
 # Copyright 2019, All rights reserved
 #
 # Code licensed under the MIT license
 # http://zenorocha.mit-license.org
 #
-# @author Zeno Rocha <hi@zenorocha.com>
-# @maintainer Avalon Williams <avalonwilliams@protonmail.com>
+# @original-authors Zeno Rocha <hi@zenorocha.com>, Avalon Williams <avalonwilliams@protonmail.com> (Dracula Theme)
+# @adapter-and-modifier ezswan <ezswan@example.com> (Adapted and modified the Catppuccin Mocha Theme, including the pink color fix; discovered that hex colors are supported)
 
 # Initialization {{{
 source ${0:A:h}/lib/async.zsh
@@ -24,7 +24,7 @@ PROMPT=''
 # Set to 0 to disable the git status
 CATPPUCCIN_DISPLAY_GIT=${CATPPUCCIN_DISPLAY_GIT:-1}
 
-# Set to 1 to show the date
+# Set to 1 to show the time
 CATPPUCCIN_DISPLAY_TIME=${CATPPUCCIN_DISPLAY_TIME:-0}
 
 # Set to 1 to show the 'context' segment
@@ -79,15 +79,15 @@ fi
 # Status segment {{{
 catppuccin_arrow() {
 	if [[ "$1" = "start" ]] && (( ! CATPPUCCIN_DISPLAY_NEW_LINE )); then
-		print -P "%F{#f5c2e7}$CATPPUCCIN_ARROW_ICON%f"  # Pink
+		print -P "$CATPPUCCIN_ARROW_ICON"
 	elif [[ "$1" = "end" ]] && (( CATPPUCCIN_DISPLAY_NEW_LINE )); then
-		print -P "\n%F{#f5c2e7}$CATPPUCCIN_ARROW_ICON%f"  # Pink
+		print -P "\n$CATPPUCCIN_ARROW_ICON"
 	fi
 }
 
 # arrow is green if last command was successful, red if not, 
 # turns yellow in vi command mode
-PROMPT+='%(1V:%F{#f9e2af}:%(?:%F{#a6e3a1}:%F{#f38ba8}))%B$(catppuccin_arrow start)'  # Yellow, Green, Red
+PROMPT+='%(1V:%F{#f9e2af}:%(?:%F{#f5c2e7}:%F{#f38ba8}))%B$(catppuccin_arrow start)'  # Yellow, Pink, Red
 # }}}
 
 # Time segment {{{
