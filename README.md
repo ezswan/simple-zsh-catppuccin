@@ -1,4 +1,6 @@
-# Simple ZSH Catppuccin v1.0.0 (Adapted by ezswan)
+# Simple ZSH Catppuccin
+
+![Simple ZSH Catppuccin Theme](images/simple-zsh-catppuccin-main-image.png)
 
 A customized ZSH theme based on the Catppuccin Mocha color scheme, adapted from the Dracula theme foundation. This theme features a simple and functional prompt with support for git status, time display, context, and directory information, enhanced with hex color support discovered by ezswan.
 
