@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Lint and load
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Install zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+
+      - name: Syntax check (zsh -n)
+        run: zsh -n catppuccin-mocha.zsh-theme
+
+      - name: Source the theme
+        run: |
+          zsh -df -c '
+            autoload -Uz add-zsh-hook
+            source ./catppuccin-mocha.zsh-theme
+            print "loaded ok: ASYNC_VERSION=$ASYNC_VERSION"
+          '
