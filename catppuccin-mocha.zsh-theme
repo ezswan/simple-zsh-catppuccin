@@ -2,15 +2,19 @@
 # vim: set ft=zsh :
 # Catppuccin Mocha Theme v1.2.5 (Adapted by ezswan)
 #
-# Based on: https://github.com/dracula/dracula-theme
+# Adapted by ezswan from the Dracula zsh theme, recolored to the
+# Catppuccin Mocha palette.
+#   Upstream:   https://github.com/dracula/zsh
+#   This theme: https://github.com/ezswan/simple-zsh-catppuccin
 #
-# Copyright 2019, All rights reserved
+# Copyright (c) 2019 Zeno Rocha and Dracula Theme contributors
+# Copyright (c) 2025 ezswan
+# Licensed under the MIT License. See LICENSE.
 #
-# Code licensed under the MIT license
-# http://zenorocha.mit-license.org
-#
-# @original-authors Zeno Rocha <hi@zenorocha.com>, Avalon Williams <avalonwilliams@protonmail.com> (Dracula Theme)
-# @adapter-and-modifier ezswan <ezswan@example.com> (Adapted and modified the Catppuccin Mocha Theme, including the pink color fix; discovered that hex colors are supported)
+# Credits:
+#   Dracula Theme — Zeno Rocha <hi@zenorocha.com>,
+#                   Avalon Williams <avalonwilliams@protonmail.com>
+#   zsh-async (lib/async.zsh) — Mathias Fredriksson (MIT, vendored). See lib/LICENSE.
 
 # Initialization {{{
 # Directory this theme file lives in. Resolved here at top level, where $0 is the
