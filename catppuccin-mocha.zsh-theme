@@ -67,6 +67,9 @@ CATPPUCCIN_DISPLAY_NEW_LINE=${CATPPUCCIN_DISPLAY_NEW_LINE:-0}
 # Set to 1 to show full path of current working directory
 CATPPUCCIN_DISPLAY_FULL_CWD=${CATPPUCCIN_DISPLAY_FULL_CWD:-0}
 
+# Set to 1 or greater to show that many trailing directories in full-path mode
+CATPPUCCIN_DIR_TRIM=${CATPPUCCIN_DIR_TRIM:-0}
+
 # function to detect if git has support for --no-optional-locks
 catppuccin_test_git_optional_lock() {
 	local git_version
@@ -145,7 +148,7 @@ PROMPT+='%F{#cba6f7}%B$(catppuccin_context)'  # Mauve
 # Directory segment {{{
 catppuccin_directory() {
 	if (( CATPPUCCIN_DISPLAY_FULL_CWD )); then
-		print -P '%~ '
+		print -P "%${CATPPUCCIN_DIR_TRIM}~ "
 	else
 		print -P '%c '
 	fi
