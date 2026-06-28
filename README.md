@@ -41,7 +41,7 @@ Time, context, and directory segments are color-coded for readability.
 
 1. **Clone the Repository**:
 
-   git clone https://github.com/ezswan/simple-zsh-catppuccin.git into a location of your choice.
+   git clone <https://github.com/ezswan/simple-zsh-catppuccin.git> into a location of your choice.
 
    `git clone https://github.com/ezswan/simple-zsh-catppuccin.git "your-path"`
 
@@ -62,20 +62,52 @@ Time, context, and directory segments are color-coded for readability.
 
    `source ~/.zshrc`
 
+## Options
+
+Every option is an environment variable. Set it in `~/.zshrc` **before** Oh My Zsh
+is sourced (above the `source $ZSH/oh-my-zsh.sh` line), because the prompt is built
+when the theme loads. Any variable you leave unset falls back to the default below.
+
+| Option                        | Default   | Effect                                              |
+| ----------------------------- | --------- | --------------------------------------------------- |
+| `CATPPUCCIN_DISPLAY_GIT`      | `1`       | Git branch/status segment (`0` disables it)         |
+| `CATPPUCCIN_DISPLAY_TIME`     | `0`       | Show the current time                               |
+| `CATPPUCCIN_TIME_FORMAT`      | `%-H:%M`  | `strftime` format for the time segment              |
+| `CATPPUCCIN_DISPLAY_CONTEXT`  | `0`       | Show `user` (or `user@host` on SSH / as root)       |
+| `CATPPUCCIN_DISPLAY_FULL_CWD` | `0`       | Full path instead of just the folder name           |
+| `CATPPUCCIN_DIR_TRIM`         | `0`       | Trailing dirs to keep in full-path mode (`0` = all) |
+| `CATPPUCCIN_DISPLAY_NEW_LINE` | `0`       | Put command input on its own line                   |
+| `CATPPUCCIN_ARROW_ICON`       | `➜`       | Prompt arrow icon                                   |
+| `CATPPUCCIN_CUSTOM_VARIABLE`  | _(unset)_ | Show this text as a yellow segment                  |
+| `CATPPUCCIN_GIT_NOLOCK`       | _auto_    | Pass git `--no-optional-locks` (auto on git ≥ 2.14) |
+
+In 12-hour (AM/PM) locales, `CATPPUCCIN_TIME_FORMAT` defaults to `%-I:%M%p`.
+
+### Example
+
+```sh
+# ~/.zshrc — place these above `source $ZSH/oh-my-zsh.sh`
+CATPPUCCIN_DISPLAY_TIME=1
+CATPPUCCIN_DISPLAY_CONTEXT=1
+CATPPUCCIN_DISPLAY_FULL_CWD=1
+CATPPUCCIN_DIR_TRIM=2
+CATPPUCCIN_ARROW_ICON='➜ '
+```
+
 ## Credits
 
-### Original Authors:
+### Original Authors
 
-Zeno Rocha hi@zenorocha.com
-Avalon Williams avalonwilliams@protonmail.com (Dracula Theme foundation)
+Zeno Rocha <hi@zenorocha.com>
+Avalon Williams <avalonwilliams@protonmail.com> (Dracula Theme foundation)
 
-### Adapter and Modifier:
+### Adapter and Modifier
 
-ezswan ezswan@proton.me (Adapted the Catppuccin Mocha Theme, implemented the pink color fix replacing green, and discovered hex color support)
+ezswan <ezswan@proton.me> (Adapted the Catppuccin Mocha Theme, implemented the pink color fix replacing green, and discovered hex color support)
 
 ## License
 
-This theme is licensed under the MIT License. See http://zenorocha.mit-license.org for details.
+This theme is licensed under the MIT License. See <http://zenorocha.mit-license.org> for details.
 
 ## Contributing
 
