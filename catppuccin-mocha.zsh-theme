@@ -13,10 +13,38 @@
 # @adapter-and-modifier ezswan <ezswan@example.com> (Adapted and modified the Catppuccin Mocha Theme, including the pink color fix; discovered that hex colors are supported)
 
 # Initialization {{{
-source ${0:A:h}/lib/async.zsh
+# Directory this theme file lives in. Resolved here at top level, where $0 is the
+# sourced file path (inside a function $0 would be the function name instead).
+CATPPUCCIN_THEME_DIR="${0:A:h}"
+
+# Load the vendored zsh-async library. Try the theme's own lib dir first, then
+# the common oh-my-zsh custom-theme locations, and warn (instead of failing
+# silently) if it can't be found — the git segment is then disabled.
+catppuccin_source_async() {
+	local -a candidate_paths
+	local candidate
+	candidate_paths=(
+		"$CATPPUCCIN_THEME_DIR/lib/async.zsh"
+		"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/catppuccin-mocha/lib/async.zsh"
+		"${ZSH:-$HOME/.oh-my-zsh}/themes/catppuccin-mocha/lib/async.zsh"
+	)
+
+	for candidate in $candidate_paths; do
+		if [[ -r "$candidate" ]]; then
+			source "$candidate"
+			return 0
+		fi
+	done
+
+	print -u2 -- "catppuccin-mocha theme: unable to load lib/async.zsh, disabling git prompt segment"
+	return 1
+}
+
+CATPPUCCIN_ASYNC_AVAILABLE=1
+catppuccin_source_async || CATPPUCCIN_ASYNC_AVAILABLE=0
 autoload -Uz add-zsh-hook
 setopt PROMPT_SUBST
-async_init
+(( CATPPUCCIN_ASYNC_AVAILABLE )) && async_init
 PROMPT=''
 # }}}
 
@@ -41,8 +69,8 @@ CATPPUCCIN_DISPLAY_FULL_CWD=${CATPPUCCIN_DISPLAY_FULL_CWD:-0}
 
 # function to detect if git has support for --no-optional-locks
 catppuccin_test_git_optional_lock() {
-	local git_version=${DEBUG_OVERRIDE_V:-"$(git version | cut -d' ' -f3)"}
-	local git_version="$(git version | cut -d' ' -f3)"
+	local git_version
+	git_version=${DEBUG_OVERRIDE_V:-"$(git version | cut -d' ' -f3)"}
 	# test for git versions < 2.14.0
 	case "$git_version" in
 		[0-1].*)
@@ -79,9 +107,9 @@ fi
 # Status segment {{{
 catppuccin_arrow() {
 	if [[ "$1" = "start" ]] && (( ! CATPPUCCIN_DISPLAY_NEW_LINE )); then
-		print -P "$CATPPUCCIN_ARROW_ICON"
+		print -P -- "$CATPPUCCIN_ARROW_ICON"
 	elif [[ "$1" = "end" ]] && (( CATPPUCCIN_DISPLAY_NEW_LINE )); then
-		print -P "\n$CATPPUCCIN_ARROW_ICON"
+		print -P -- "\n$CATPPUCCIN_ARROW_ICON"
 	fi
 }
 
@@ -138,7 +166,7 @@ PROMPT+='$(custom_variable_prompt)'
 # Async git segment {{{
 catppuccin_git_status() {
 	(( ! CATPPUCCIN_DISPLAY_GIT )) && return
-	cd "$1"
+	builtin cd "$1"
 	
 	local ref branch lockflag
 	
@@ -157,7 +185,7 @@ catppuccin_git_status() {
 	if [[ -n $branch ]]; then
 		echo -n "${ZSH_THEME_GIT_PROMPT_PREFIX}${branch}"
 
-		local git_status icon
+		local git_status
 		git_status="$(LC_ALL=C =git $lockflag status 2>&1)"
 		
 		if [[ "$git_status" =~ 'new file:|deleted:|modified:|renamed:|Untracked files:' ]]; then
@@ -182,7 +210,9 @@ catppuccin_git_async() {
 	async_job catppuccin_git_worker catppuccin_git_status "$(pwd)"
 }
 
-add-zsh-hook precmd catppuccin_git_async
+if (( CATPPUCCIN_ASYNC_AVAILABLE )); then
+	add-zsh-hook precmd catppuccin_git_async
+fi
 
 PROMPT+='$CATPPUCCIN_GIT_STATUS'
 
