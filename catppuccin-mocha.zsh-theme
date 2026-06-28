@@ -1,5 +1,5 @@
 # -*- mode: sh; -*-
-# vim: set ft=sh :
+# vim: set ft=zsh :
 # Catppuccin Mocha Theme v1.2.5 (Adapted by ezswan)
 #
 # Based on: https://github.com/dracula/dracula-theme
